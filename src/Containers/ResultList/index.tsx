@@ -3,16 +3,17 @@ import {Block} from 'baseui/block';
 import {H4} from 'baseui/typography';
 import DefinitionList from "../../Components/DefinitionList";
 import {CarService} from "../../Services/CarService";
-import {DefinitionType, ModelType} from "../../Models";
+import {DefinitionType, ModelType, YearType} from "../../Models";
 import Loader from './Loader';
 import {blockStyle, titleStyle} from "./style";
 
 type Props = {
-    model: ModelType | null
+    model: ModelType | null,
+    year: YearType | null,
 };
 
-export default function ResultList({ model }: Props) {
-    const { data: definitions, isLoading, isError, error } = CarService.useGetDefinitions(model);
+export default function ResultList({ model, year }: Props) {
+    const { data: definitions, isLoading, isError, error } = CarService.useGetDefinitions(model, year);
 
     // variables
     const blockStyles = React.useMemo<object>(() => (blockStyle), []);

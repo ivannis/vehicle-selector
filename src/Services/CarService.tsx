@@ -98,13 +98,14 @@ const useGetModels = (make: MakeType | null, _: boolean): UseQueryResult<ModelTy
     })
 }
 
-async function getDefinitions(model: ModelType): Promise<DefinitionType[]> {
+async function getDefinitions(model: ModelType, year: YearType): Promise<DefinitionType[]> {
     const {
         uvdb: { vehicle_selector: { uvdb_vehicle_definitions: { items } } }
     } = await apiClient().request(
         CarRepository.findDefinitions,
         {
             model: model.id,
+            year: year.id,
             limit: 500
         }
     );
@@ -118,11 +119,11 @@ async function getDefinitions(model: ModelType): Promise<DefinitionType[]> {
     }));
 }
 
-const useGetDefinitions = (model: ModelType | null): UseQueryResult<DefinitionType[] | unknown, Error> => {
-    return useQuery<DefinitionType[], Error>(['definitions', model?.id], () => getDefinitions(model), {
-        // `model` would be `null` at first (falsy),
-        // so the query will not execute until the model exists
-        enabled: model !== null
+const useGetDefinitions = (model: ModelType | null, year: YearType | null): UseQueryResult<DefinitionType[] | unknown, Error> => {
+    return useQuery<DefinitionType[], Error>(['definitions', model?.id, year?.id], () => getDefinitions(model, year), {
+        // `model` and `year` would be `null` at first (falsy),
+        // so the query will not execute until the model and year exists
+        enabled: model !== null && year !== null
     })
 }
 

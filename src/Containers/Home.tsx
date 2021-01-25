@@ -9,11 +9,17 @@ import {Block} from 'baseui/block';
 import ResultList from "./ResultList"
 
 function Home() {
-    const [model, setModel] = React.useState(null);
+    const [state, setState] = React.useState({
+        model: null,
+        year: null,
+    });
 
     const handleOnSubmit = (filter: FilterType) => {
-        if (filter.model !== null) {
-            setModel(filter.model)
+        if (filter.model !== null && filter.year) {
+            setState({
+                model: filter.model,
+                year: filter.year,
+            })
         }
     }
 
@@ -28,7 +34,7 @@ function Home() {
             <Block marginTop="scale1000" marginBottom="scale1000">
                 <Grid gridGutters={12}>
                     <Cell span={12}>
-                        <ResultList model={model} />
+                        <ResultList model={state.model} year={state.year} />
                     </Cell>
                 </Grid>
             </Block>
